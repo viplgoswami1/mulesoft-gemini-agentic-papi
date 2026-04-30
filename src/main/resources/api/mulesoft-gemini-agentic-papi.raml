@@ -1,0 +1,59 @@
+#%RAML 1.0
+title: Agentic Commerce Process API
+version: v1
+mediaType: application/json
+protocols: [ HTTPS ]
+
+types:
+  OrderRequest: !include ../schemas/CreateCheckoutSessionRequest.raml
+
+/checkout-sessions:
+  post:
+    body:
+      application/json:
+        properties: # Body must define properties or a type
+        type: OrderRequest
+    responses:
+      201:
+        body:
+          application/json:
+            example: { "sessionId": "123" } 
+
+  /{id}:
+    uriParameters:
+      id: string
+    get:
+      responses:
+        200:
+          body:
+            application/json:
+              example: { "id": "123", "status": "active" }
+    put:
+      body:
+        application/json:
+        
+
+
+/carts:
+  /{cartId}:
+    uriParameters:
+      cartId: string
+    get:
+      responses:
+        200:
+          body:
+            application/json:
+    put:
+      body:
+        application/json:
+      responses:
+        201:
+          body:
+            application/json:
+  post:
+    body:
+      application/json:
+    responses:
+      201:
+        body:
+          application/json:

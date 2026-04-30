@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd ">
+    <flow name="mulesoft-gemini-agentic-papi-main">
+        <http:listener config-ref="mulesoft-gemini-agentic-papi-httpListenerConfig" path="/api/v1/*">
+            <http:response statusCode="#[vars.httpStatus default 200]">
+                <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
+            </http:response>
+            <http:error-response statusCode="#[vars.httpStatus default 500]">
+                <http:body><![CDATA[#[payload]]]></http:body>
+                <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
+            </http:error-response>
+        </http:listener>
+        <logger level="INFO" doc:name="Logger" doc:id="a48ed373-6a7b-432a-8856-5e804ff7d701" message="#[payload]" />
+        <apikit:router config-ref="mulesoft-gemini-agentic-papi-config" />
+    </flow>
+    <flow name="mulesoft-gemini-agentic-papi-console">
+        <http:listener config-ref="mulesoft-gemini-agentic-papi-httpListenerConfig" path="/console/*">
+            <http:response statusCode="#[vars.httpStatus default 200]">
+                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+            </http:response>
+            <http:error-response statusCode="#[vars.httpStatus default 500]">
+                <http:body>#[payload]</http:body>
+                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+            </http:error-response>
+        </http:listener>
+        <apikit:console config-ref="mulesoft-gemini-agentic-papi-config" />
+    </flow>
+    <flow name="put:\checkout-sessions\(id):application\json:mulesoft-gemini-agentic-papi-config">
+        <ee:transform doc:name="Transform Message">
+            <ee:variables>
+                <ee:set-variable variableName="id">attributes.uriParams.'id'</ee:set-variable>
+            </ee:variables>
+        </ee:transform>
+        <logger level="INFO" message="put:\checkout-sessions\(id):application\json:mulesoft-gemini-agentic-papi-config" />
+    </flow>
+    <flow name="get:\checkout-sessions\(id):mulesoft-gemini-agentic-papi-config">
+        <ee:transform doc:name="Transform Message">
+            <ee:variables>
+                <ee:set-variable variableName="id">attributes.uriParams.'id'</ee:set-variable>
+            </ee:variables>
+        </ee:transform>
+        <ee:transform doc:name="Transform Message">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+  id: "123",
+  status: "active"
+} as Object {encoding: "UTF-8", mediaType: "application/json"}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+    </flow>
+    <flow name="post:\checkout-sessions:application\json:mulesoft-gemini-agentic-papi-config">
+        <ee:transform doc:name="Transform Message">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+  sessionId: "123"
+} as Object {encoding: "UTF-8", mediaType: "application/json"}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+    </flow>
+    <flow name="put:\carts\(cartId):application\json:mulesoft-gemini-agentic-papi-config">
+        <ee:transform doc:name="Transform Message">
+            <ee:variables>
+                <ee:set-variable variableName="cartId">attributes.uriParams.'cartId'</ee:set-variable>
+            </ee:variables>
+        </ee:transform>
+        <logger level="INFO" message="put:\carts\(cartId):application\json:mulesoft-gemini-agentic-papi-config" />
+    </flow>
+    <flow name="get:\carts\(cartId):mulesoft-gemini-agentic-papi-config">
+        <logger level="INFO" message="get:\carts\(cartId):mulesoft-gemini-agentic-papi-config" />
+        <ee:transform doc:name="Transform Message">
+            <ee:variables>
+                <ee:set-variable variableName="cartId">attributes.uriParams.'cartId'</ee:set-variable>
+            </ee:variables>
+        </ee:transform>
+        <flow-ref doc:name="Get Cart SubFlow" doc:id="dd4d72d3-641d-4d05-b61c-9081c2d1b629" name="GET-carts-impl" />
+        <logger level="INFO" doc:name="Logging Payload" doc:id="e78866ea-ba33-4690-84a7-e72cbb6d9e4b" message="#[payload]" />
+    </flow>
+    <flow name="post:\carts:application\json:mulesoft-gemini-agentic-papi-config">
+        <logger level="INFO" message="post:\carts:application\json:mulesoft-gemini-agentic-papi-config" />
+    </flow>
+</mule>

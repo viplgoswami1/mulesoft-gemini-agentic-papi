@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="GET-checkout-session-impl" doc:id="3935d936-e613-42a6-9868-e3c78ff0ec37" >
+		<logger level="INFO" doc:name="Logger" doc:id="f6fea37a-1657-44dc-b3da-0ddcb37ddb83" />
+		<ee:transform doc:name="Set Request Params" doc:id="9b0a4db9-8865-4bcc-a3f2-755e1b0eca08" >
+			<ee:message />
+			<ee:variables >
+				<ee:set-variable variableName="requestParams" ><![CDATA[%dw 2.0
+output application/java
+---
+{
+	method:"GET",
+	path: Mule::p('http.request.process.basePath') ++  Mule::p('http.request.process.checkout-session.path'),
+	client_id: Mule::p('http.request.process.checkout-session.client_id'),
+	client_secret: Mule::p('http.request.process.checkout-session.client_secret')
+}]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<flow-ref doc:name="System API Call" doc:id="05992a0e-7169-4c0a-9dd0-3fddc5455521" name="systemApiCall" />
+		<ee:transform doc:name="Set Response Payload" doc:id="90402e8d-8911-431f-963c-baa9ccfc375b" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>

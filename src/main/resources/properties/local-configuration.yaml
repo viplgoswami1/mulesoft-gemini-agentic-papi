@@ -1,0 +1,40 @@
+api_instance: "18546441"
+environment: "Development"
+listener:
+    host: "localhost"
+    port: "8082"
+    basePath: "api"
+    keystore:
+        type: "JKS"
+        path: "samplekeystore1.jks"
+        alias: "mysamplekey1"
+        keypassword: "mule123"
+        password: "mule123"
+http:
+    request:
+        system:
+            host: "localhost"
+            port: "8083"
+            basePath: "/api/v1"
+            checkout-session:
+                client_secret: ""
+                client_id: ""
+            getcarts:
+                path: "/carts/"
+                method: "GET"
+                client_secret: ""
+                client_id: ""
+            postcarts:
+                path: "/carts"
+                method: "POST"
+                client_secret: ""
+                client_id: ""
+            putcarts:
+                path: "/carts/"
+                method: "PUT"
+                client_secret: ""
+                client_id: ""
+        
+reconnection:
+    freq: "1000"
+    attempts: "5"

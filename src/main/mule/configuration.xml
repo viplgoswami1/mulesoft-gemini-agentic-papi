@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:tls="http://www.mulesoft.org/schema/mule/tls"
+	xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd 
+http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd 
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd">
+
+	<configuration doc:name="Configuration" doc:id="f51f315f-8b7e-4b3c-acd1-aca5610a9a7e" defaultErrorHandler-ref="error-handlerError_Handler" />
+	<http:listener-config name="mulesoft-gemini-agentic-papi-httpListenerConfig">
+        <http:listener-connection host="${listener.host}" port="${listener.port}" protocol="HTTPS" tlsContext="TLS_Context"/>
+    </http:listener-config>
+    <apikit:config name="mulesoft-gemini-agentic-papi-config" api="mulesoft-gemini-agentic-papi.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
+	<configuration-properties doc:name="Configuration properties" doc:id="271c0cfd-8fde-4c84-bd4e-e03ad92b9362" file="properties/local-configuration.yaml" />
+	<tls:context name="TLS_Context" doc:name="TLS Context" doc:id="dbf02fc3-3573-49f4-b9eb-40300ad23922" >
+			<tls:key-store type="jks" path="${listener.keystore.path}" alias="${listener.keystore.alias}" keyPassword="${listener.keystore.keypassword}" password="${listener.keystore.password}" />
+	</tls:context>
+<http:request-config name="system_request_configuration" doc:name="HTTP Request configuration" doc:id="76c253e9-d9f6-47a4-95f9-a382df7393c3" responseTimeout="90000">
+		<http:request-connection protocol="HTTPS" host="${http.request.system.host}" port="${http.request.system.port}">
+			<reconnection >
+				<reconnect frequency="${reconnection.freq}" count="${reconnection.attempts}" />
+			</reconnection>
+			<tls:context >
+				<tls:trust-store insecure="true" />
+			</tls:context>
+		</http:request-connection>
+	</http:request-config>
+
+</mule>

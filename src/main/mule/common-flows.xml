@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:crypto="http://www.mulesoft.org/schema/mule/crypto"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:module-logging="http://www.mulesoft.org/schema/mule/module-logging"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/module-logging http://www.mulesoft.org/schema/mule/module-logging/current/mule-module-logging.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/crypto http://www.mulesoft.org/schema/mule/crypto/current/mule-crypto.xsd">
+	<sub-flow name="systemApiCall" doc:id="3ed87fdf-9a48-46a8-8c2e-4f2a4a66e138" >
+		<set-variable value="#[now()]" doc:name="start_time" doc:id="a67cd00e-e3e1-45bf-8f20-848cf1ed1da6" variableName="start_time"/>
+		<try doc:name="Try" doc:id="f5cf6cb7-c3a3-4646-b90a-280c4f454e4e" >
+			<logger level="INFO" doc:name="Logger" doc:id="6a79c07d-b867-4bc3-82a4-abd4b7593a3b" message="#[payload]"/>
+			<http:request method="#[vars.requestParams.method]" doc:name="systemAPIRequest" doc:id="750a2ff9-b064-4303-8f45-6f71cc70f130" config-ref="system_request_configuration" path="#[vars.requestParams.path]" outputMimeType="application/json">
+			<reconnect frequency="${reconnection.freq}" count="${reconnection.attempts}" />
+				<http:body><![CDATA[#[vars.requestPayload]]]></http:body>
+			<http:headers><![CDATA[#[output application/java
+---
+{
+	"client_secret" : vars.requestParams.client_secret,
+	"X-Correlation-Id" : vars.correlationId,
+	"client_id" : vars.requestParams.client_id,
+	"content-type": "application/json"
+}]]]></http:headers>
+		</http:request>
+			<error-handler >
+				<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="119ad882-a6e7-40c8-8ccc-d35536c264a8" >
+					<set-payload value="#[error.errorMessage.payload]" doc:name="Set Payload" doc:id="3d3ad162-07ad-4844-8822-7316b449f2f6" />
+					<ee:transform doc:name="Transform Message" doc:id="9d9a3500-569c-4989-8bc8-ceaf1bf1ff06" >
+						<ee:message >
+							<ee:set-payload resource="dwl/errorPayload.dwl" />
+						</ee:message>
+					</ee:transform>
+					<set-variable value="#[error.errorMessage.attributes.statusCode default 500]" doc:name="httpStatus" doc:id="fa1f4b27-8c7f-486f-bb99-732422dec83a" variableName="httpStatus" />
+				</on-error-propagate>
+			</error-handler>
+		</try>
+		<set-payload value="#[payload]" doc:name="Set Payload" doc:id="9abf680c-a5e1-447a-b7e8-d6a81029c5f3" />
+		<set-variable value="#[attributes.statusCode]" doc:name="httpStatus" doc:id="b292cbf5-ea9e-4ed5-82be-b0584664ada4" variableName="httpStatus" />
+	</sub-flow>
+</mule>
+	

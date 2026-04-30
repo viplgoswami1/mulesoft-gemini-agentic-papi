@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="GET-carts-impl" doc:id="20e2e589-da18-4642-8849-89fb6b07c3d5" >
+		<logger level="INFO" doc:name="Logger" doc:id="566f6100-e07f-4e25-bdc5-a0d2b67a4801" message="#['GetCart SubFlow Initiated']" />
+		<ee:transform doc:name="Set Request Params" doc:id="ae4d634f-322a-4190-b243-fea39dc23f40" >
+			<ee:message />
+			<ee:variables >
+				<ee:set-variable variableName="requestParams" ><![CDATA[%dw 2.0
+output application/java
+---
+{
+	method:Mule::p('http.request.system.getcarts.method'),
+	path: Mule::p('http.request.system.basePath') ++  Mule::p('http.request.system.getcarts.path') ++ (vars.cartId default ""),
+	client_id: Mule::p('http.request.system.getcarts.client_id'),
+	client_secret: Mule::p('http.request.system.getcarts.client_secret')
+}]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<flow-ref doc:name="System API Call" doc:id="a10d8de7-374c-4d54-8d13-9e4a71c00784" name="systemApiCall" />
+		<ee:transform doc:name="Set Response Payload" doc:id="ae4a5972-48f2-46a0-8eea-440e4ab410f0" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="POST-carts-impl" doc:id="788c6bf1-4fe4-4062-92d8-a710196a55b0" >
+		<logger level="INFO" doc:name="Logger" doc:id="6b945ad4-d6a0-47b9-9ed0-298135c1216c" message="#['GetCart SubFlow Initiated']" />
+		<ee:transform doc:name="Set Request Params" doc:id="5f1cbb10-01ee-4e4f-b738-ec3ab26fd45d" >
+			<ee:message />
+			<ee:variables >
+				<ee:set-variable variableName="requestParams" ><![CDATA[%dw 2.0
+output application/java
+---
+{
+	method:Mule::p('http.request.system.postcarts.method'),
+	path: Mule::p('http.request.system.basePath') ++  Mule::p('http.request.system.postcarts.path'),
+	client_id: Mule::p('http.request.system.postcarts.client_id'),
+	client_secret: Mule::p('http.request.system.postcarts.client_secret')
+}]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<flow-ref doc:name="System API Call" doc:id="923bc8ba-29a1-49fa-8158-07f3e3a5090c" name="systemApiCall" />
+		<ee:transform doc:name="Set Response Payload" doc:id="cc2447be-c048-4961-9e78-75a06b8a5e0e" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>
