@@ -56,4 +56,30 @@ payload]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
 	</flow>
+	<flow name="PUT-carts-impl" doc:id="efed5516-a970-4c50-bf8f-3513a67a207c" >
+		<logger level="INFO" doc:name="Logger" doc:id="b5247906-5cda-435d-9afb-558850f22d66" message="#['GetCart SubFlow Initiated']" />
+		<ee:transform doc:name="Set Request Params" doc:id="d37f7a08-d566-4967-aa54-e69fa58b6971" >
+			<ee:message />
+			<ee:variables >
+				<ee:set-variable variableName="requestParams" ><![CDATA[%dw 2.0
+output application/java
+---
+{
+	method:Mule::p('http.request.system.putcarts.method'),
+	path: Mule::p('http.request.system.basePath') ++  Mule::p('http.request.system.putcarts.path'),
+	client_id: Mule::p('http.request.system.putcarts.client_id'),
+	client_secret: Mule::p('http.request.system.putcarts.client_secret')
+}]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<flow-ref doc:name="System API Call" doc:id="3ba61c0e-68b5-4938-a366-24a615cc8a93" name="systemApiCall" />
+		<ee:transform doc:name="Set Response Payload" doc:id="147702f2-ffa4-4e02-83d3-ab2a4b0d2b58" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
 </mule>

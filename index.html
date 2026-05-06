@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MuleSoft Gemini Agentic PAPI</title>
+
+<!-- Scarf tracking pixel — replace PAPI_PIXEL_ID_FROM_SCARF with your actual pixel ID -->
+<img referrerpolicy="no-referrer-when-downgrade"
+     src="https://viplgoswami1.gateway.scarf.sh/a.png?x-pxid=32e622ae-fd1b-4233-a37b-34e5937dc997"
+     style="display:none" />
+
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0d1117; color: #e6edf3; }
+header { background: #161b22; border-bottom: 1px solid #30363d; padding: 20px 40px; display: flex; align-items: center; gap: 16px; }
+header h1 { font-size: 20px; color: #7ee787; }
+.papi-badge { color: #7ee787; font-weight: 700; font-size: 22px; }
+.hero { text-align: center; padding: 80px 40px 60px; background: linear-gradient(180deg, #0d1117 0%, #161b22 100%); }
+.hero h2 { font-size: 42px; font-weight: 700; margin-bottom: 16px; }
+.hero p { font-size: 18px; color: #8b949e; max-width: 650px; margin: 0 auto 32px; line-height: 1.6; }
+.badges { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-bottom: 40px; }
+.badges img { height: 20px; }
+.btn { display: inline-block; padding: 12px 28px; border-radius: 6px; font-size: 16px; font-weight: 600; text-decoration: none; margin: 6px; }
+.btn-primary { background: #238636; color: white; border: 1px solid #2ea043; }
+.btn-secondary { background: #21262d; color: #58a6ff; border: 1px solid #30363d; }
+.btn:hover { opacity: 0.85; }
+.section { padding: 60px 40px; max-width: 960px; margin: 0 auto; }
+.section h3 { font-size: 24px; margin-bottom: 24px; color: #7ee787; border-bottom: 1px solid #30363d; padding-bottom: 12px; }
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 40px; }
+.card { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 24px; }
+.card h4 { font-size: 16px; margin-bottom: 8px; color: #f0f6fc; }
+.card p { font-size: 14px; color: #8b949e; line-height: 1.5; }
+pre { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 20px; overflow-x: auto; font-size: 13px; line-height: 1.6; margin: 16px 0; position: relative; }
+code { color: #79c0ff; font-family: 'Courier New', monospace; }
+.copy-btn { position: absolute; top: 10px; right: 10px; background: #21262d; border: 1px solid #30363d; color: #8b949e; padding: 4px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; }
+.copy-btn:hover { color: #e6edf3; }
+table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+th { background: #161b22; padding: 12px 16px; text-align: left; font-size: 14px; color: #8b949e; border-bottom: 1px solid #30363d; }
+td { padding: 12px 16px; border-bottom: 1px solid #21262d; font-size: 14px; }
+
+/* Architecture flow */
+.arch-flow { display: flex; flex-direction: column; align-items: center; gap: 0; margin: 24px 0; }
+.arch-box { width: 100%; max-width: 700px; background: #21262d; border: 1px solid #30363d; border-radius: 8px; padding: 14px 20px; text-align: center; font-size: 14px; font-weight: 500; }
+.arch-box.eapi { background: #1f2d3d; border-color: #58a6ff; color: #58a6ff; }
+.arch-box.active { background: #1a2d1f; border-color: #2ea043; color: #7ee787; }
+.arch-box.coming { background: #21262d; border-color: #484f58; color: #8b949e; border-style: dashed; }
+.arch-arrow { color: #7ee787; font-size: 20px; text-align: center; padding: 6px 0; width: 100%; max-width: 700px; }
+.arch-split { display: flex; gap: 16px; width: 100%; max-width: 700px; }
+.arch-split .arch-box { flex: 1; }
+.arch-label { font-size: 11px; color: #8b949e; margin-top: 4px; text-align: center; width: 100%; max-width: 700px; }
+.badge-layer { display: inline-block; background: #1f2d3d; color: #79c0ff; border-radius: 4px; padding: 2px 8px; font-size: 11px; font-weight: 500; margin-left: 8px; }
+
+footer { text-align: center; padding: 40px; border-top: 1px solid #30363d; color: #8b949e; font-size: 14px; margin-top: 40px; }
+footer a { color: #58a6ff; text-decoration: none; }
+.highlight { color: #f0f6fc; font-weight: 600; }
+</style>
+</head>
+<body>
+
+<header>
+  <span class="papi-badge">⚙ PAPI</span>
+  <h1>MuleSoft Gemini Agentic PAPI</h1>
+</header>
+
+<div class="hero">
+  <h2>Process API — Orchestration Layer</h2>
+  <p>A MuleSoft Process API that orchestrates business logic for the Gemini Agentic
+     commerce platform. Routes requests from the Experience API to SAP System APIs
+     with transformation, validation, and error handling.</p>
+  <div class="badges">
+    <img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" alt="License">
+    <img src="https://img.shields.io/badge/MuleSoft-Mule%204.4%2B-00A0DF" alt="MuleSoft">
+    <img src="https://img.shields.io/badge/Java-17-orange" alt="Java">
+    <img src="https://img.shields.io/badge/Layer-Process%20API-2ea043" alt="PAPI">
+  </div>
+  <a href="https://github.com/viplgoswami1/mulesoft-gemini-agentic-papi" class="btn btn-primary">⭐ Star on GitHub</a>
+  <a href="https://github.com/viplgoswami1/mulesoft-gemini-agentic-papi/archive/refs/heads/main.zip" class="btn btn-secondary">⬇ Download ZIP</a>
+  <a href="https://github.com/viplgoswami1/mulesoft-gemini-agentic-papi" class="btn btn-secondary">🍴 Fork</a>
+</div>
+
+<div class="section">
+
+  <h3>Architecture</h3>
+  <p style="color:#8b949e; margin-bottom:20px">
+    This PAPI sits in the middle of the <strong style="color:#e6edf3">API-led connectivity</strong>
+    stack — receiving requests from the EAPI and routing to the appropriate System APIs.
+  </p>
+
+  <div class="arch-flow">
+    <div class="arch-box eapi">
+      <a href="https://github.com/viplgoswami1/mulesoft-gemini-agentic-eapi"
+         style="color:#58a6ff; text-decoration:none">
+        mulesoft-gemini-agentic-eapi
+      </a>
+      <span class="badge-layer">EAPI</span>
+    </div>
+    <div class="arch-label">Experience API — Gemini AI integration, client-facing</div>
+    <div class="arch-arrow">↓</div>
+    <div class="arch-box active">
+      mulesoft-gemini-agentic-papi
+      <span class="badge-layer" style="background:#1a2d1f; color:#7ee787; border:none">PAPI — this repo</span>
+    </div>
+    <div class="arch-label">Process API — business logic orchestration &amp; routing</div>
+    <div class="arch-arrow">↓</div>
+    <div class="arch-split">
+      <div style="flex:1; display:flex; flex-direction:column; align-items:center;">
+        <div class="arch-box coming" style="width:100%">
+          sap-gemini-agentic-cart-sapi
+          <span class="badge-layer" style="color:#8b949e">SAPI — coming soon</span>
+        </div>
+        <div class="arch-label">Cart System API</div>
+      </div>
+      <div style="flex:1; display:flex; flex-direction:column; align-items:center;">
+        <div class="arch-box coming" style="width:100%">
+          sap-gemini-agentic-checkout-sapi
+          <span class="badge-layer" style="color:#8b949e">SAPI — coming soon</span>
+        </div>
+        <div class="arch-label">Checkout System API</div>
+      </div>
+    </div>
+    <div class="arch-arrow">↓ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ↓</div>
+    <div class="arch-layer" style="width:100%; max-width:700px;">
+      <div class="arch-box" style="background:#2d1f2d; border-color:#d2a8ff; color:#d2a8ff;">
+        SAP CCv2 — Merchant Commerce Engine
+        <span class="badge-layer" style="background:#2d1f2d; color:#d2a8ff; border:none">SAP Commerce Cloud v2</span>
+      </div>
+      <div class="arch-label">Backend commerce engine — products, pricing, inventory, orders</div>
+    </div>
+  </div>
+
+  <h3>Features</h3>
+  <div class="cards">
+    <div class="card">
+      <h4>🔀 Smart Routing</h4>
+      <p>Route incoming requests to Cart SAPI or Checkout SAPI based on operation type and business rules.</p>
+    </div>
+    <div class="card">
+      <h4>🔄 Transformation</h4>
+      <p>Translate EAPI payloads into SAPI-compatible formats using DataWeave transformations.</p>
+    </div>
+    <div class="card">
+      <h4>⚡ Business Logic</h4>
+      <p>Apply centralised business rules — pricing, validation, eligibility checks — before routing.</p>
+    </div>
+    <div class="card">
+      <h4>🛡️ Error Handling</h4>
+      <p>Centralised error management across all downstream SAPIs with consistent error responses.</p>
+    </div>
+  </div>
+
+  <h3>Getting Started</h3>
+  <p style="color:#8b949e; margin-bottom:12px"><span class="highlight">Step 1</span> — Clone the repository:</p>
+  <pre><button class="copy-btn" onclick="navigator.clipboard.writeText('git clone https://github.com/viplgoswami1/mulesoft-gemini-agentic-papi.git\ncd mulesoft-gemini-agentic-papi')">Copy</button><code>git clone https://github.com/viplgoswami1/mulesoft-gemini-agentic-papi.git
+cd mulesoft-gemini-agentic-papi</code></pre>
+
+  <p style="color:#8b949e; margin:20px 0 12px"><span class="highlight">Step 2</span> — Import into Anypoint Studio:</p>
+  <div class="card" style="margin-bottom:20px">
+    <p>File → Import → Anypoint Studio Project from File System → Select cloned folder → Finish</p>
+  </div>
+
+  <p style="color:#8b949e; margin-bottom:12px"><span class="highlight">Step 3</span> — Configure in <code>src/main/resources/config.yaml</code>:</p>
+  <pre><button class="copy-btn" onclick="navigator.clipboard.writeText('cart:\n  sapi:\n    url: \"http://localhost:8083\"\ncheckout:\n  sapi:\n    url: \"http://localhost:8084\"\nhttp:\n  listener:\n    port: 8082')">Copy</button><code>cart:
+  sapi:
+    url: "http://localhost:8083"
+checkout:
+  sapi:
+    url: "http://localhost:8084"
+http:
+  listener:
+    port: 8082</code></pre>
+
+  <h3>API Endpoints</h3>
+  <div class="cards">
+    <div class="card">
+      <h4>POST /cart</h4>
+      <p>Create a cart session. Validates, transforms and routes to Cart SAPI.</p>
+    </div>
+    <div class="card">
+      <h4>PUT /cart/{cartId}</h4>
+      <p>Update an existing cart. Routes update to Cart SAPI with full line item replacement.</p>
+    </div>
+    <div class="card">
+      <h4>POST /checkout</h4>
+      <p>Initiate checkout. Routes to Checkout SAPI for SAP order creation.</p>
+    </div>
+  </div>
+
+  <h3>Related Repositories</h3>
+  <div class="cards">
+    <div class="card">
+      <h4>✦ Gemini Agentic EAPI</h4>
+      <p>Experience API — upstream caller of this PAPI.<br><br>
+      <a href="https://github.com/viplgoswami1/mulesoft-gemini-agentic-eapi" style="color:#58a6ff">github.com/viplgoswami1/mulesoft-gemini-agentic-eapi</a></p>
+    </div>
+    <div class="card">
+      <h4>🏗️ SAP CCv2</h4>
+      <p>SAP Commerce Cloud v2 — Merchant Commerce Engine powering products, pricing, inventory and orders.</p>
+    </div>
+    <div class="card">
+      <h4>🛒 Cart SAPI <span style="color:#8b949e; font-size:11px">coming soon</span></h4>
+      <p>System API for SAP cart operations.<br><br>
+      <span style="color:#8b949e">sap-gemini-agentic-cart-sapi</span></p>
+    </div>
+    <div class="card">
+      <h4>💳 Checkout SAPI <span style="color:#8b949e; font-size:11px">coming soon</span></h4>
+      <p>System API for SAP checkout operations.<br><br>
+      <span style="color:#8b949e">sap-gemini-agentic-checkout-sapi</span></p>
+    </div>
+    <div class="card">
+      <h4>🔌 GMC Connector</h4>
+      <p>Custom MuleSoft connector for Google Shopping API.<br><br>
+      <a href="https://github.com/viplgoswami1/google-merchant-center-connector" style="color:#58a6ff">GitHub</a> ·
+      <a href="https://central.sonatype.com/artifact/io.github.viplgoswami1/google-merchant-center-mule-connector" style="color:#58a6ff">Maven Central</a></p>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <p>
+    Built by <a href="https://github.com/viplgoswami1">Viplove Goswami</a> &nbsp;·&nbsp;
+    <a href="https://github.com/viplgoswami1/mulesoft-gemini-agentic-papi">PAPI</a> &nbsp;·&nbsp;
+    <a href="https://github.com/viplgoswami1/mulesoft-gemini-agentic-eapi">EAPI</a> &nbsp;·&nbsp;
+    <a href="https://github.com/viplgoswami1/google-merchant-center-connector">GMC Connector</a> &nbsp;·&nbsp;
+    Apache License 2.0
+  </p>
+  <br>
+  <p style="font-size:12px">Built with ❤️ for the MuleSoft and AI community</p>
+</footer>
+
+</body>
+</html>

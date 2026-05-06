@@ -5,7 +5,9 @@ mediaType: application/json
 protocols: [ HTTPS ]
 
 types:
-  OrderRequest: !include ../schemas/CreateCheckoutSessionRequest.raml
+  OrderRequest    : !include ../schemas/CreateCheckoutSessionRequest.raml
+  PostCartRequest : !include ../schemas/CartRequest.raml
+  PutCartRequest : !include ../schemas/UpdateCartRequest.raml
 
 /checkout-sessions:
   post:
@@ -46,6 +48,7 @@ types:
     put:
       body:
         application/json:
+          type: PutCartRequest
       responses:
         201:
           body:
@@ -53,6 +56,7 @@ types:
   post:
     body:
       application/json:
+        type: PostCartRequest
     responses:
       201:
         body:

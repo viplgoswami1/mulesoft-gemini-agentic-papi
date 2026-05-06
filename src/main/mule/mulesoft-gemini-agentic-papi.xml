@@ -64,16 +64,18 @@ output application/json
         </ee:transform>
     </flow>
     <flow name="put:\carts\(cartId):application\json:mulesoft-gemini-agentic-papi-config">
-        <ee:transform doc:name="Transform Message">
+        <logger level="INFO" message="put:\carts\(cartId):application\json:mulesoft-gemini-agentic-papi-config" />
+		<ee:transform doc:name="Setting CartId">
             <ee:variables>
                 <ee:set-variable variableName="cartId">attributes.uriParams.'cartId'</ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <logger level="INFO" message="put:\carts\(cartId):application\json:mulesoft-gemini-agentic-papi-config" />
+		<flow-ref doc:name="Put Cart SubFlow" doc:id="403dd6c6-02b5-4c9a-bad7-320737dad3e3" name="PUT-carts-impl"/>
+		<logger level="INFO" doc:name="Logging Payload" doc:id="b8c32f2a-664e-4be1-9c96-7e7dc01d6b44" message="#[payload]" />
     </flow>
     <flow name="get:\carts\(cartId):mulesoft-gemini-agentic-papi-config">
         <logger level="INFO" message="get:\carts\(cartId):mulesoft-gemini-agentic-papi-config" />
-        <ee:transform doc:name="Transform Message">
+        <ee:transform doc:name="Setting CartId">
             <ee:variables>
                 <ee:set-variable variableName="cartId">attributes.uriParams.'cartId'</ee:set-variable>
             </ee:variables>
@@ -83,5 +85,7 @@ output application/json
     </flow>
     <flow name="post:\carts:application\json:mulesoft-gemini-agentic-papi-config">
         <logger level="INFO" message="post:\carts:application\json:mulesoft-gemini-agentic-papi-config" />
+		<flow-ref doc:name="Post Cart SubFlow" doc:id="9f0d2a67-6e3c-481d-a28b-6e272ac3035c" name="POST-carts-impl"/>
+		<logger level="INFO" doc:name="Logging Payload" doc:id="3819eebd-be1e-4eac-a1a7-816f71795a41" message="#[payload]" />
     </flow>
 </mule>
